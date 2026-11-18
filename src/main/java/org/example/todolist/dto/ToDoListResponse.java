@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 public record ToDoListResponse(
         Long task_id,
         String task,
-        String todolistName,
         Status status,
         LocalDateTime dueDate
 ) {
