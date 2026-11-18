@@ -8,6 +8,7 @@ public record ToDoListResponse(
         Long task_id,
         String task,
         Status status,
-        LocalDateTime dueDate
+        LocalDateTime dueDate,
+        String toDoListName
 ) {
 }

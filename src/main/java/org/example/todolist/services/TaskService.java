@@ -1,11 +1,11 @@
 package org.example.todolist.services;
 
-import com.sun.jdi.request.DuplicateRequestException;
+
 import org.example.todolist.dto.ToDoListRequest;
 import org.example.todolist.dto.ToDoListResponse;
 import org.example.todolist.entity.ToDoList;
-import org.example.todolist.exceptions.DuplicateResourceException;
 import org.example.todolist.exceptions.ResourceNotFoundException;
+import org.example.todolist.exceptions.DuplicateResourceException;
 import org.example.todolist.repository.ToDoListRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,17 +24,18 @@ public class TaskService {
     // CREATE
     @Transactional
     public ToDoListResponse createTask (ToDoListRequest request){
-        if (toDoListRepository.existsByToDolistName(request.todolistName())){
-            throw new DuplicateRequestException("A to list with that name already exists");
+        if (toDoListRepository.existsByToDoListName (request.toDoListName())){
+            throw new DuplicateResourceException("A to list with that name already exists");
         }
 
     ToDoList toDoList = new ToDoList();
-    toDoList.setTodolistName(request.todolistName());
+    toDoList.setToDoListName(request.toDoListName());
     toDoList.setTask(request.task());
     toDoList.setStatus(request.status());
     toDoList.setDueDate(request.dueDate());
 
-    return mapToResponse(toDoList);
+    ToDoList saveTask = toDoListRepository.save(toDoList);
+    return mapToResponse(saveTask);
     }
 
     //READ TASKS
@@ -45,26 +46,28 @@ public class TaskService {
 
     //UPDATE TASK
     @Transactional
-    public ToDoListResponse updateTask (ToDoListRequest request){
-        if (toDoListRepository.existsByTaskName(request.task())){
+    public ToDoListResponse updateTask (Long task_id, ToDoListRequest request){
+        ToDoList toDoList = findTaskOrThrow(task_id);
+        if (toDoListRepository.existsByToDoListName(request.task())){
             throw new DuplicateResourceException("That task already exists");
         }
 
-        ToDoList toDoList = new ToDoList();
-        toDoList.setTodolistName(request.todolistName());
+        toDoList.setToDoListName(request.toDoListName());
         toDoList.setTask(request.task());
         toDoList.setStatus(request.status());
         toDoList.setDueDate(request.dueDate());
 
-        return mapToResponse(toDoList);
+        ToDoList updatedTask = toDoListRepository.save(toDoList);
+        return mapToResponse(updatedTask);
 
     }
 
     //DELETE TASK
     @Transactional
-    public void deleteTask (Long task_id){
+    public void deleteTask(Long task_id){
         ToDoList toDoList = findTaskOrThrow(task_id);
-        toDoListRepository.delete(toDoList);
+        ToDoList deletedTask = toDoListRepository.save(toDoList);
+        toDoListRepository.delete(deletedTask);
     }
 
     private ToDoList findTaskOrThrow (Long task_id){
@@ -76,7 +79,8 @@ public class TaskService {
                 toDoList.getTask_id(),
                 toDoList.getTask(),
                 toDoList.getStatus(),
-                toDoList.getDueDate()
+                toDoList.getDueDate(),
+                toDoList.getToDoListName()
         );
     }
 }

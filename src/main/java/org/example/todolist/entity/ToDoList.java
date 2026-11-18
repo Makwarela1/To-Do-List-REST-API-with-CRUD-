@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@Table (name = "ToDo_List")
+@Table (name = "to_do_list ")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -16,13 +16,15 @@ public class ToDoList {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long task_id;
+
     @Column (name = "task", nullable = false)
     private String task;
+
     @Enumerated(EnumType.STRING)
     @Column (name = "status", nullable = false)
     private Status status ;
     @Column (name = "dueDate", nullable = false)
     private LocalDateTime dueDate;
     @Column (name = "todolist_name", nullable = false)
-    private String todolistName;
+    private String toDoListName;
 }

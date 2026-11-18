@@ -2,14 +2,13 @@ package org.example.todolist.controllers;
 
 import jakarta.validation.Valid;
 import org.example.todolist.dto.ToDoListResponse;
-import org.example.todolist.entity.ToDoList;
+import org.example.todolist.dto.ToDoListRequest;
 import org.example.todolist.services.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.example.todolist.services.TaskService;
-import org.example.todolist.dto.ToDoListResponse;
-import org.example.todolist.dto.ToDoListRequest;
+
+
 
 import java.util.List;
 
@@ -31,8 +30,26 @@ public class ToDoListController {
     }
 
     // READ ALL
-    @GetMapping ("/todolist")
-    public ResponseEntity <List<ToDoListResponse>> getAllTasks ()
+    @GetMapping
+    public ResponseEntity <List<ToDoListResponse>> getAllTasks (){
+         return ResponseEntity.ok(taskService.getAllTasks());
+    }
 
-    //READ ONE
+    // UPDATE TASK
+    @PutMapping("/{task_id}")
+    public ResponseEntity<ToDoListResponse> updateTask(
+            @PathVariable Long task_id,
+            @Valid @RequestBody ToDoListRequest request) {
+
+        ToDoListResponse response = taskService.updateTask(task_id, request);
+        return ResponseEntity.ok(response);
+    }
+
+    // DELETE TASK
+    @DeleteMapping("/{task_id}")
+    public ResponseEntity <Void> deleteTask (@PathVariable Long task_id){
+        taskService.deleteTask(task_id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

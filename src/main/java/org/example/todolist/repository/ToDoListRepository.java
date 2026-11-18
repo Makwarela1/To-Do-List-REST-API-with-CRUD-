@@ -1,14 +1,10 @@
 package org.example.todolist.repository;
-import org.springframework.stereotype.Repository;
 import org.example.todolist.entity.ToDoList;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+public interface ToDoListRepository extends JpaRepository<ToDoList, Long> {
 
-@Repository
-public interface ToDoListRepository extends JpaRepository <ToDoList, Long> {
+    boolean existsByToDoListName (String toDoListName);
 
-    boolean existsByToDolistName (String todolistName);
-
-    boolean existsByTaskName (String task);
 
 }
