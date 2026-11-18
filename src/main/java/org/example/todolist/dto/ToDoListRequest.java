@@ -1,5 +1,6 @@
 package org.example.todolist.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -16,6 +17,7 @@ public record ToDoListRequest(
         @Size(max = 255 , message = "Status of the task must not exceed 255 characters")
         String status,
 
+        @JsonFormat (pattern = "yyyy-MM-dd HH:mm")
         @NotBlank (message = "Due date is required")
         @Size(max = 6 , message = "Due date must not exceed 6 characters")
         String dueDate
