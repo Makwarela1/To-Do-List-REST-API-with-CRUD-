@@ -23,5 +23,6 @@ public class ToDoList {
     private Status status ;
     @Column (name = "dueDate", nullable = false)
     private LocalDateTime dueDate;
-
+    @Column (name = "todolist_name", nullable = false)
+    private String todolistName;
 }

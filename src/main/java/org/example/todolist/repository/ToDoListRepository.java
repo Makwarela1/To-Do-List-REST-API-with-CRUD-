@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
 public interface ToDoListRepository extends JpaRepository <ToDoList, Long> {
+
+
 }
